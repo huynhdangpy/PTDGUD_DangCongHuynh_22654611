@@ -1,0 +1,25 @@
+div{
+    background-color: rgb(42, 151, 165);
+    border-radius: 30px;
+}
+
+.txtInput{
+    background-color: white;
+    border-radius: 5px;
+    width: 200px;
+    height: 20px;
+    margin-top: 10px;
+    color: black
+}
+button{
+    color: rgb(16, 13, 10);
+}
+
+
+#result{
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+}
+span{
+    color: rgb(51, 255, 0);
+}
