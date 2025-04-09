@@ -1,0 +1,26 @@
+{
+    "customer":
+    [
+        {"id": "1", "image": "Avatar.png", "name": "Elizabeth Lee", "company": "AvatarSystems", "orderValue": 359, "orderDate": "10/07/2023", "status": "New"},
+        {"id": "2", "image": "Avatar (1).png", "name": "Carlos Garcia", "company": "SmoozeShift", "orderValue": 747, "orderDate": "24/07/2023", "status": "New"},
+        {"id": "3", "image": "Avatar (2).png", "name": "Elizabeth Bailey", "company": "Prime Time Telecom", "orderValue": 564, "orderDate": "08/08/2023", "status": "In-progress"},
+        {"id": "4", "image": "Avatar (3).png", "name": "Ryan Brown", "company": "OmniTech Corporation", "orderValue": 541, "orderDate": "31/08/2023", "status": "In-progress"},
+        {"id": "5", "image": "Avatar (4).png", "name": "Ryan Young", "company": "DataStream Inc.", "orderValue": 769, "orderDate": "01/05/2023", "status": "Completed"},
+        {"id": "6", "image": "Avatar 313.png", "name": "Hailey Adams", "company": "FlowRush", "orderValue": 922, "orderDate": "10/06/2023", "status": "Completed"},
+        {"id": "7", "image": "Avatar (2).png", "name": "John Smith", "company": "TechWave", "orderValue": 650, "orderDate": "15/09/2023", "status": "New"},
+        {"id": "8", "image": "Avatar (3).png", "name": "Sophia White", "company": "NextGen Solutions", "orderValue": 480, "orderDate": "20/07/2023", "status": "New"},
+        {"id": "9", "image": "Avatar 313.png", "name": "James Miller", "company": "InnoWorks", "orderValue": 825, "orderDate": "05/10/2023", "status": "In-progress"},
+        {"id": "10", "image": "Avatar.png", "name": "Olivia Johnson", "company": "CloudNet", "orderValue": 710, "orderDate": "12/09/2023", "status": "Completed"},
+        {"id": "11", "image": "Avatar (1).png", "name": "William Anderson", "company": "SkyTech", "orderValue": 390, "orderDate": "18/06/2023", "status": "New"},
+        {"id": "12", "image": "Avatar.png", "name": "Emma Thomas", "company": "Bright Innovations", "orderValue": 530, "orderDate": "28/08/2023", "status": "In-progress"},
+        {"id": "13", "image": "Avatar.png", "name": "Daniel Wilson", "company": "CyberFlow", "orderValue": 920, "orderDate": "07/10/2023", "status": "Completed"},
+        {"id": "14", "image": "Avatar.png", "name": "Grace Martinez", "company": "Quantum Systems", "orderValue": 460, "orderDate": "25/07/2023", "status": "New"},
+        {"id": "15", "image": "Avatar.png", "name": "Benjamin Clark", "company": "Neon Dynamics", "orderValue": 600, "orderDate": "30/09/2023", "status": "In-progress"},
+        {"id": "16", "image": "Avatar.png", "name": "Isabella Harris", "company": "DataVortex", "orderValue": 720, "orderDate": "03/10/2023", "status": "Completed"},
+        {"id": "17", "image": "Avatar.png", "name": "Lucas Wright", "company": "AI Nexus", "orderValue": 815, "orderDate": "19/08/2023", "status": "New"},
+        {"id": "18", "image": "Avatar.png", "name": "Mia Robinson", "company": "FutureLink", "orderValue": 545, "orderDate": "10/09/2023", "status": "In-progress"},
+        {"id": "19", "image": "Avatar.png", "name": "Ethan Hall", "company": "TechSavvy", "orderValue": 689, "orderDate": "27/07/2023", "status": "Completed"},
+        {"id": "20", "image": "Avatar.png", "name": "Ava King", "company": "SoftEdge", "orderValue": 500, "orderDate": "15/08/2023", "status": "New"}
+      ]
+      
+}
