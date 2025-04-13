@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pencil } from "lucide-react";
+import { Pencil, PlusCircle } from "lucide-react";
 
 const statusStyles = {
   New: "text-blue-500 bg-blue-100",
@@ -12,6 +12,13 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // Thêm state cho thông báo
+  const [newUser, setNewUser] = useState({
+    name: "",
+    company: "",
+    ordervalue: "",
+    orderdate: "",
+    status: "New",
+  }); // State cho user mới
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -39,17 +46,66 @@ const Dashboard = () => {
     setSelectedItem(null);
   };
 
+  const handleAddUserModal = () => {
+    setNewUser({
+      name: "",
+      company: "",
+      ordervalue: "",
+      orderdate: "",
+      status: "New",
+    });
+    setShowModal(true);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmitAddUser = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        "https://67c865040acf98d070866108.mockapi.io/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        }
+      );
+      const addedUser = await res.json();
+
+      // Cập nhật danh sách người dùng
+      setData((prevData) => [...prevData, addedUser]);
+      setSuccessMessage("Thêm người dùng thành công!");
+      setShowModal(false);
+    } catch (err) {
+      console.error("POST error:", err);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-md shadow-sm">
-      {/* Hiển thị thông báo cập nhật thành công */}
+      {/* Hiển thị thông báo thêm người dùng thành công */}
       {successMessage && (
         <div className="mb-4 p-3 text-green-700 bg-green-100 rounded-md">
           {successMessage}
         </div>
       )}
 
+      {/* Nút thêm người dùng */}
+      <button
+        onClick={handleAddUserModal}
+        className="px-6 py-3 mb-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+      >
+        <PlusCircle size={20} className="mr-2" />
+        Add New User
+      </button>
+
       {/* Table Header */}
-      <div className="grid grid-cols-7 items-center text-xs font-semibold text-gray-500 px-4 py-2 border-b">
+      <div className="grid grid-cols-8 items-center text-xs font-semibold text-gray-500 px-4 py-2 border-b">
         <div>
           <input type="checkbox" />
         </div>
@@ -64,7 +120,7 @@ const Dashboard = () => {
       {data.map((item) => (
         <div
           key={item.id}
-          className="grid grid-cols-7 items-center text-sm px-4 py-3 border-b hover:bg-gray-50"
+          className="grid grid-cols-8 items-center text-sm px-4 py-3 border-b hover:bg-gray-50"
         >
           <div>
             <input type="checkbox" />
@@ -100,7 +156,7 @@ const Dashboard = () => {
         </div>
       ))}
 
-      {showModal && selectedItem && (
+      {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Overlay mờ */}
           <div
@@ -110,56 +166,53 @@ const Dashboard = () => {
 
           {/* Nội dung Modal */}
           <div className="relative z-50 bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
-            {/* Header Avatar + Info */}
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={selectedItem.avatar}
-                alt={selectedItem.name}
-                className="w-14 h-14 rounded-full border"
-              />
-              <div>
-                <h2 className="text-xl font-semibold">{selectedItem.name}</h2>
-                <p className="text-gray-500 text-sm">{selectedItem.company}</p>
-              </div>
-            </div>
+            <h2 className="text-xl font-semibold mb-4">
+              {selectedItem ? "Edit User" : "Add New User"}
+            </h2>
 
             {/* Form */}
             <form
-              onSubmit={async (e) => {
-                e.preventDefault();
+              onSubmit={
+                selectedItem
+                  ? async (e) => {
+                      e.preventDefault();
 
-                const updatedUser = {
-                  ...selectedItem,
-                  name: e.target.name.value,
-                  company: e.target.company.value,
-                  status: e.target.status.value,
-                };
+                      const updatedUser = {
+                        ...selectedItem,
+                        name: e.target.name.value,
+                        company: e.target.company.value,
+                        ordervalue: e.target.ordervalue.value,
+                        orderdate: e.target.orderdate.value,
+                        status: e.target.status.value,
+                      };
 
-                try {
-                  await fetch(
-                    `https://67c865040acf98d070866108.mockapi.io/user/${selectedItem.id}`,
-                    {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(updatedUser),
+                      try {
+                        await fetch(
+                          `https://67c865040acf98d070866108.mockapi.io/user/${selectedItem.id}`,
+                          {
+                            method: "PUT",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(updatedUser),
+                          }
+                        );
+
+                        // Cập nhật state
+                        setData((prevData) =>
+                          prevData.map((item) =>
+                            item.id === selectedItem.id ? updatedUser : item
+                          )
+                        );
+
+                        setSuccessMessage("Cập nhật thành công!");
+                        setShowModal(false);
+                      } catch (err) {
+                        console.error("PUT error:", err);
+                      }
                     }
-                  );
-
-                  // Cập nhật state
-                  setData((prevData) =>
-                    prevData.map((item) =>
-                      item.id === selectedItem.id ? updatedUser : item
-                    )
-                  );
-
-                  setSuccessMessage("Cập nhật thành công!"); // Hiển thị thông báo
-                  setShowModal(false);
-                } catch (err) {
-                  console.error("PUT error:", err);
-                }
-              }}
+                  : handleSubmitAddUser
+              }
               className="space-y-4"
             >
               {/* Name */}
@@ -168,7 +221,8 @@ const Dashboard = () => {
                 <input
                   name="name"
                   type="text"
-                  defaultValue={selectedItem.name}
+                  defaultValue={selectedItem ? selectedItem.name : newUser.name}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded-md"
                 />
               </div>
@@ -181,7 +235,42 @@ const Dashboard = () => {
                 <input
                   name="company"
                   type="text"
-                  defaultValue={selectedItem.company}
+                  defaultValue={
+                    selectedItem ? selectedItem.company : newUser.company
+                  }
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                />
+              </div>
+
+              {/* Order Value */}
+              <div>
+                <label className="block text-gray-700 font-medium">
+                  Order Value
+                </label>
+                <input
+                  name="ordervalue"
+                  type="text"
+                  defaultValue={
+                    selectedItem ? selectedItem.ordervalue : newUser.ordervalue
+                  }
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                />
+              </div>
+
+              {/* Order Date */}
+              <div>
+                <label className="block text-gray-700 font-medium">
+                  Order Date
+                </label>
+                <input
+                  name="orderdate"
+                  type="date"
+                  defaultValue={
+                    selectedItem ? selectedItem.orderdate : newUser.orderdate
+                  }
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded-md"
                 />
               </div>
@@ -193,7 +282,10 @@ const Dashboard = () => {
                 </label>
                 <select
                   name="status"
-                  defaultValue={selectedItem.status}
+                  defaultValue={
+                    selectedItem ? selectedItem.status : newUser.status
+                  }
+                  onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded-md bg-white"
                 >
                   <option value="New">New</option>
@@ -213,9 +305,9 @@ const Dashboard = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Save
+                  {selectedItem ? "Save Changes" : "Add New User"}
                 </button>
               </div>
             </form>
